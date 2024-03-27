@@ -35,7 +35,7 @@ app.post('/api/signIn', (req, res) => {
     
         getUser(email, password).then((user) => {
             if(!user){
-               return res.status(401).json({message: 'Usuário ou senha inválido'})
+               return res.status(401).json({ error: 'Credenciais inválidas' })
             }
 
             const {id, email, created_at} = user;
@@ -45,7 +45,7 @@ app.post('/api/signIn', (req, res) => {
 
         }).catch(err => {
             console.log(err);
-            res.status(500).send(err);
+            res.status(500).send({ error: err });
         })
     } catch (err) {
         res.send(err);
@@ -53,9 +53,12 @@ app.post('/api/signIn', (req, res) => {
 });
 
 app.get('/api/privateRoute', authenticateToken, (req, res) => {
-    // executes after authenticateToken
-    // ...
-    res.json({success: true});
+    
+    res.json(
+        {
+            "mensagem": "Token JWT válido. Você está autenticado."
+        }
+    );
 })
 
 
